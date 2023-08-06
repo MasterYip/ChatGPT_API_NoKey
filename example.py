@@ -2,7 +2,7 @@
 Author: MasterYip 2205929492@qq.com
 Date: 2023-08-06 16:31:07
 LastEditors: MasterYip
-LastEditTime: 2023-08-06 19:10:47
+LastEditTime: 2023-08-06 19:55:54
 FilePath: \ChatGPT_API_NoKey\example.py
 Description: file content
 '''
@@ -46,6 +46,11 @@ def SingleThreadServerExample():
     completions = openai.ChatCompletion.create(
                         model="whatever",
                         messages="Hello!",
+                    )
+    print(completions['choices'][0]['message']['content'])
+    completions = openai.ChatCompletion.create(
+                        model="whatever",
+                        messages="How to write a program that can get rid of the APIKEY?",
                     )
     print(completions['choices'][0]['message']['content'])
 
