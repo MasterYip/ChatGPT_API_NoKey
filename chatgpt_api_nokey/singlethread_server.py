@@ -7,8 +7,8 @@ FilePath: \ChatGPT_API_NoKey\chatgpt_api_nokey\singlethread_server.py
 Description: file content
 '''
 
-from .fake_api import MultiThreadedFakeAPI
 from .config import *
+from .fake_api import FakeAPI
 
 import json
 import time
@@ -69,12 +69,11 @@ class RequestHandler(BaseHTTPRequestHandler):
 
 class SingleThreadServer(object):
 
-    def __init__(self, threadNum=THEAD_NUM, headless=HEADLESS, proxy=PROXY, header=HEADER, server_address=SERVER_ADDRESS):
+    def __init__(self, headless=HEADLESS, proxy=PROXY, header=HEADER, server_address=SERVER_ADDRESS):
         self.logger = logging.getLogger('SingleThreadServer')
         self.logger.addHandler(cil_handler)
         self.address = server_address
-        self.api = MultiThreadedFakeAPI(
-            threadNum=threadNum, headless=headless, proxy=proxy, header=header)
+        self.api = FakeAPI(headless=headless, proxy=proxy, header=header)
         self.launchHTTPServer()
 
     def launchHTTPServer(self):

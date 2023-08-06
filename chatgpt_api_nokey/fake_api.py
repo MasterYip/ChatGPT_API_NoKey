@@ -61,7 +61,7 @@ class FakeAPI(object):
             self.driver.get(self.url)
             self.skipHint()
         else:
-            input('Please login and press Enter to continue...')
+            input('Please login and press Enter to continue...\nIf HEADLESS is True, please set it to False for the first time.')
             self.saveCookies()
 
     def skipHint(self):
