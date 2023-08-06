@@ -1,0 +1,15 @@
+[[source]]
+url = "https://pypi.mirrors.ustc.edu.cn/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+openai = "*"
+bs4 = "*"
+html2text = "*"
+undetected-chromedriver = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.7"

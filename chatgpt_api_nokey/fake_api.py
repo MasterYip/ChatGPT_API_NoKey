@@ -49,7 +49,8 @@ class FakeAPI(object):
         self.driver.get(self.url)
         self.driver.delete_all_cookies()
         if os.path.isfile(COOKIES_FILE):
-            cookies = json.load(open(COOKIES_FILE, 'r'), encoding='utf-8')
+            cookies = json.load(open(COOKIES_FILE, 'r'))
+            # cookies = json.load(open(COOKIES_FILE, 'r'), encoding='utf-8')
             # 方法1 将expiry类型变为int
             for cookie in cookies:
                 # 并不是所有cookie都含有expiry 所以要用dict的get方法来获取
