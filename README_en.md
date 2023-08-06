@@ -5,10 +5,12 @@
 
 Screw the APIKEY! Chat to GPT with NO KEY!
 ## Features
+![FakeAPI](doc/FakeAPI.gif)
+
 ChatGPT_API_NoKey is a simple ChatGPT fake API that mimics keyboard and mouse operations, allowing users to interact with GPT without the need for an APIKEY.
 
 **Note**:
-1. For the first-time use, set `HEADLESS=False` and manually log in to ChatGPT to save cookies for automatic login in subsequent sessions. The script does not include any other listening functionalities, as assured by the author.
+1. **For the first-time use, set `HEADLESS=False` and manually log in to ChatGPT to save cookies for automatic login in subsequent sessions.** The script does not include any other listening functionalities, as assured by the author.
 2. Abusing this API may lead to account issues, so please control the request frequency appropriately.
 3. Currently, only single-thread blocking mode is supported, and concurrent request processing is still under development.
 

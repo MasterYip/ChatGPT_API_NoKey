@@ -1,9 +1,9 @@
 '''
 Author: MasterYip 2205929492@qq.com
 Date: 2023-08-06 16:31:07
-LastEditors: Raymon Yip
-LastEditTime: 2023-08-06 20:21:19
-FilePath: /ChatGPT_API_NoKey/example.py
+LastEditors: MasterYip
+LastEditTime: 2023-08-06 20:47:10
+FilePath: \ChatGPT_API_NoKey\example.py
 Description: file content
 '''
 import time
@@ -40,7 +40,7 @@ def FakeAPIExample():
 
 def SingleThreadServerExample():
     Thread(target=SingleThreadServer, args=(HEADLESS, PROXY, HEADER, SERVER_ADDRESS)).start()
-    time.sleep(15)  # Wait for the server to start (It's better to start the server in another thread)
+    time.sleep(20)  # Wait for the server to start (It's better to start the server in another thread)
     openai.api_base = "http://localhost:5000"
     openai.api_key = "whatever"
     completions = openai.ChatCompletion.create(
