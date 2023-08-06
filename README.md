@@ -33,6 +33,11 @@ pip install -r .\requirements.txt
 
 3. 开箱使用（example.py包含相关例程）
 
+运行example.py
+```
+python ./example.py
+```
+
 FakeAPI直接调用
 ```
 api = FakeAPI(HEADLESS, PROXY, HEADER)

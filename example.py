@@ -1,9 +1,9 @@
 '''
 Author: MasterYip 2205929492@qq.com
 Date: 2023-08-06 16:31:07
-LastEditors: MasterYip
-LastEditTime: 2023-08-06 19:10:47
-FilePath: \ChatGPT_API_NoKey\example.py
+LastEditors: Raymon Yip
+LastEditTime: 2023-08-06 20:21:19
+FilePath: /ChatGPT_API_NoKey/example.py
 Description: file content
 '''
 import time
@@ -51,5 +51,5 @@ def SingleThreadServerExample():
 
 
 if __name__ == "__main__":
-    # FakeAPIExample()
-    SingleThreadServerExample()
+    FakeAPIExample()
+    # SingleThreadServerExample()
