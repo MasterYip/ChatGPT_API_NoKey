@@ -1,7 +1,19 @@
+'''
+Author: MasterYip 2205929492@qq.com
+Date: 2023-08-06 14:45:50
+LastEditors: MasterYip
+LastEditTime: 2023-08-06 15:27:38
+FilePath: \ChatGPT_API_NoKey\chatgpt_api_nokey\singlethread_server.py
+Description: file content
+'''
+
+from .fake_api import MultiThreadedFakeAPI
+from .config import *
+
+import json
+import time
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
-
-# For HTTPServer
 class RequestHandler(BaseHTTPRequestHandler):
 
     def __init__(self, fakeapi, *args, **kwargs):
@@ -55,15 +67,15 @@ class RequestHandler(BaseHTTPRequestHandler):
         self.wfile.write(response_json.encode())
 
 
-class FakeAPIServer(object):
+class SingleThreadServer(object):
 
     def __init__(self, threadNum=THEAD_NUM, headless=HEADLESS, proxy=PROXY, header=HEADER, server_address=SERVER_ADDRESS):
-        self.logger = logging.getLogger('FakeAPIServer')
+        self.logger = logging.getLogger('SingleThreadServer')
         self.logger.addHandler(cil_handler)
         self.address = server_address
         self.api = MultiThreadedFakeAPI(
             threadNum=threadNum, headless=headless, proxy=proxy, header=header)
-        self.launchFlaskServer()
+        self.launchHTTPServer()
 
     def launchHTTPServer(self):
         self.server = HTTPServer(self.address,
@@ -75,6 +87,3 @@ class FakeAPIServer(object):
             self.logger.info(
                 f'Server is running on http://{self.address[0]}:{self.address[1]}')
         self.server.serve_forever()
-
-    def launchFlaskServer(self):
-        launchFlaskServer(self.api, self.address)

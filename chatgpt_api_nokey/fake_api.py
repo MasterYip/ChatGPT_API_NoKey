@@ -187,11 +187,3 @@ class MultiThreadedFakeAPI(object):
 
 
 
-
-
-if __name__ == "__main__":
-
-    server = FakeAPIServer()
-    # print(fakeAPI.request("How to write a python script?"))
-    # print(fakeAPI.request("How to write a java script?"))
-    # print(fakeAPI.request("How to write a c++ program?"))
