@@ -14,6 +14,8 @@ ChatGPT_API_NoKey is a simple ChatGPT fake API that mimics keyboard and mouse op
 
 ## Installation and Usage
 1. Environment Setup
+
+Please install **Google Chrome** first.
 ```
 cd <work-dir>
 pip install -r .\requirements.txt
@@ -29,6 +31,11 @@ pip install -r .\requirements.txt
 `PROXY`: Proxy used to access ChatGPT. In this configuration, the proxy is set to None, indicating no proxy is used (or the system's default proxy) to access ChatGPT. If you need to use a proxy, you can set the proxy address to the corresponding string, such as "http://127.0.0.1:7890". Please ensure that the proxy is set correctly to ensure proper access to ChatGPT.
 
 3. Quick Start (example.py includes relevant routines)
+
+run example.py
+```
+python ./example.py
+```
 
 Direct Call to FakeAPI
 ```

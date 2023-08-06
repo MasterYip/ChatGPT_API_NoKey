@@ -17,6 +17,8 @@ ChatGPT_API_NoKey通过模仿键鼠操作实现简单的ChatGPT fake API，以�
 
 ## 安装使用
 1. 环境配置
+
+请事先安装**Google Chrome**浏览器。
 ```
 cd <work-dir>
 pip install -r .\requirements.txt
@@ -32,6 +34,11 @@ pip install -r .\requirements.txt
 `PROXY`：访问ChatGPT的代理。在这个配置中，代理设置为None，表示不使用代理（或系统默认代理）来访问ChatGPT。如果你需要使用代理，可以将代理地址设置为对应的字符串，如"http://127.0.0.1:7890"。请确保代理设置正确，以确保能够正确地访问ChatGPT。
 
 3. 开箱使用（example.py包含相关例程）
+
+运行example.py
+```
+python ./example.py
+```
 
 FakeAPI直接调用
 ```
