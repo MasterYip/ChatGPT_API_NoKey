@@ -2,7 +2,7 @@
 Author: MasterYip 2205929492@qq.com
 Date: 2023-07-13 16:41:24
 LastEditors: MasterYip
-LastEditTime: 2023-08-06 14:57:11
+LastEditTime: 2023-08-12 20:05:44
 FilePath: \ChatGPT_API_NoKey\chatgpt_api_nokey\fake_api.py
 Description: file content
 '''
@@ -12,12 +12,19 @@ from .config import *
 import time
 import json
 import html2text
+# import tiktoken
 from bs4 import BeautifulSoup
 import undetected_chromedriver as uc
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+
+def stringTokenNum(string: str, encoding_name: str = "cl100k_base") -> int:
+    """Returns the number of tokens in a text string."""
+    encoding = tiktoken.get_encoding(encoding_name)
+    num_tokens = len(encoding.encode(string))
+    return num_tokens
 
 class FakeAPI(object):
 
@@ -104,9 +111,13 @@ class FakeAPI(object):
             areas = self.driver.find_elements(by=By.TAG_NAME, value="textarea")
         return areas[0]
 
+    # FIXME: Answer mismatched
     def getLatestAnswer(self):
-        # 将HTML富文本转换为Markdown
-        return html2text.HTML2Text().handle(self.getAnswerDivs(toJson=True)[-1])
+        """Get the latest answer from the answer divs."""
+        ans = self.getAnswerDivs(toJson=True)
+        if ans:
+            # 将HTML富文本转换为Markdown
+            return html2text.HTML2Text().handle(ans[-1])
 
     def getAnswerDivs(self, toJson=False):
         xpath = "//div[contains(@class, 'markdown prose w-full break-words dark:prose-invert light')]"
@@ -117,18 +128,34 @@ class FakeAPI(object):
             return elements
 
     # Server
-    def wait(self, timeout=20):
+    def wait(self, timeout=20, poll_frequency=0.05):
         # self.driver.implicitly_wait(timeout)
         xpath = "//div[contains(@class, 'result-streaming')]"
         # Wait result-streaming div to disappear
-        wait = WebDriverWait(self.driver, timeout)
+        wait1 = WebDriverWait(self.driver, timeout, poll_frequency=poll_frequency)
+        wait2 = WebDriverWait(self.driver, timeout, poll_frequency=poll_frequency)
         try:
-            wait.until(EC.invisibility_of_element_located((By.XPATH, xpath)))
+            wait1.until(EC.presence_of_element_located((By.XPATH, xpath)))
+            wait2.until(EC.invisibility_of_element_located((By.XPATH, xpath)))
             return True
         except:
             return False
 
-    def request(self, chatText):
+    def refresh(self, timeout=20):
+        self.driver.refresh()
+        # wait for the page to load
+        wait = WebDriverWait(self.driver, timeout)
+        try:
+            wait.until(EC.presence_of_element_located((By.TAG_NAME, 'textarea')))
+            return True
+        except:
+            self.logger.warning('Refresh failed...')
+            return False
+
+    def request(self, chatText, refreshlimit=7):
+        """Send a request to the server and return the answer.
+        
+        """
         self.available = False
         flag = False
         textInput = self.getTextInput()
@@ -140,13 +167,15 @@ class FakeAPI(object):
                 break
             else:
                 self.logger.warning('Wait timeout, refreshing...')
-                self.driver.refresh()
-                time.sleep(0.2)
+                self.refresh()
             textInput = self.getTextInput()
             textInput.send_keys(chatText)
             textInput.submit()
             time.sleep(0.2)
         answer = self.getLatestAnswer()
+        if len(self.getAnswerDivs()) > refreshlimit:
+            self.logger.info('Webpage answer limit reached, refreshing...')
+            self.refresh()
         self.available = True
         return answer
 

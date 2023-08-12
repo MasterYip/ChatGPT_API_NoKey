@@ -2,7 +2,7 @@
 Author: MasterYip 2205929492@qq.com
 Date: 2023-08-06 16:31:07
 LastEditors: MasterYip
-LastEditTime: 2023-08-06 20:47:10
+LastEditTime: 2023-08-12 20:11:25
 FilePath: \ChatGPT_API_NoKey\example.py
 Description: file content
 '''
@@ -56,5 +56,10 @@ def SingleThreadServerExample():
 
 
 if __name__ == "__main__":
+    # Example
     FakeAPIExample()
     # SingleThreadServerExample()
+    
+    # Launch Server
+    # SingleThreadServer(HEADLESS, PROXY, HEADER, SERVER_ADDRESS)
+    
