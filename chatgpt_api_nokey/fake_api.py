@@ -80,7 +80,7 @@ class FakeAPI(object):
                 if button.text == 'Next':
                     button.click()
                     break
-                elif button.text == 'Done':
+                elif 'Ok' in button.text or 'Done' in button.text:
                     button.click()
                     hintFlag = False
                     break
@@ -111,12 +111,13 @@ class FakeAPI(object):
             areas = self.driver.find_elements(by=By.TAG_NAME, value="textarea")
         return areas[0]
 
-    # FIXME: Answer mismatched
+    # FIXME: Answer sometimes mismatched
     def getLatestAnswer(self):
         """Get the latest answer from the answer divs."""
         ans = self.getAnswerDivs(toJson=True)
         if ans:
             # 将HTML富文本转换为Markdown
+            # FIXME: This method is not perfect.
             return html2text.HTML2Text().handle(ans[-1])
 
     def getAnswerDivs(self, toJson=False):
