@@ -2,7 +2,7 @@
 Author: MasterYip 2205929492@qq.com
 Date: 2023-07-13 16:41:24
 LastEditors: MasterYip
-LastEditTime: 2023-08-12 20:05:44
+LastEditTime: 2023-08-22 11:24:39
 FilePath: \ChatGPT_API_NoKey\chatgpt_api_nokey\fake_api.py
 Description: file content
 '''
@@ -26,6 +26,7 @@ def stringTokenNum(string: str, encoding_name: str = "cl100k_base") -> int:
     num_tokens = len(encoding.encode(string))
     return num_tokens
 
+
 class FakeAPI(object):
 
     def __init__(self, headless=HEADLESS, proxy=PROXY, header=HEADER):
@@ -42,11 +43,11 @@ class FakeAPI(object):
         if proxy:
             chrome_options.add_argument(
                 f'--proxy-server={proxy}')  # Default: follow system
-        if headless:
+        if headless and os.path.isfile(COOKIES_FILE):
             chrome_options.add_argument('--headless')
         # Launch the Chrome browser with proxy settings
         self.driver = uc.Chrome(options=chrome_options)
-        self.logger.info('Server Initialized.')
+        self.logger.info('Browser Initialized.')
         self.loginGPT()
         self.logger.info('Login Succeeded.')
         self.available = True
@@ -111,6 +112,9 @@ class FakeAPI(object):
             areas = self.driver.find_elements(by=By.TAG_NAME, value="textarea")
         return areas[0]
 
+    def getNewChatBtn(self):
+        return self.driver.find_elements(by=By.XPATH, value="//*[@id=\"__next\"]/div[1]/div[1]/div/div/div/nav/div[1]/a")[0]
+
     # FIXME: Answer sometimes mismatched
     def getLatestAnswer(self):
         """Get the latest answer from the answer divs."""
@@ -133,8 +137,10 @@ class FakeAPI(object):
         # self.driver.implicitly_wait(timeout)
         xpath = "//div[contains(@class, 'result-streaming')]"
         # Wait result-streaming div to disappear
-        wait1 = WebDriverWait(self.driver, timeout, poll_frequency=poll_frequency)
-        wait2 = WebDriverWait(self.driver, timeout, poll_frequency=poll_frequency)
+        wait1 = WebDriverWait(self.driver, timeout,
+                              poll_frequency=poll_frequency)
+        wait2 = WebDriverWait(self.driver, timeout,
+                              poll_frequency=poll_frequency)
         try:
             wait1.until(EC.presence_of_element_located((By.XPATH, xpath)))
             wait2.until(EC.invisibility_of_element_located((By.XPATH, xpath)))
@@ -143,11 +149,13 @@ class FakeAPI(object):
             return False
 
     def refresh(self, timeout=20):
-        self.driver.refresh()
+        # self.driver.refresh() # Refresh can't start new conversation now
+        self.getNewChatBtn().click()
         # wait for the page to load
         wait = WebDriverWait(self.driver, timeout)
         try:
-            wait.until(EC.presence_of_element_located((By.TAG_NAME, 'textarea')))
+            wait.until(EC.presence_of_element_located(
+                (By.TAG_NAME, 'textarea')))
             return True
         except:
             self.logger.warning('Refresh failed...')
@@ -155,7 +163,7 @@ class FakeAPI(object):
 
     def request(self, chatText, refreshlimit=7):
         """Send a request to the server and return the answer.
-        
+
         """
         self.available = False
         flag = False
@@ -215,6 +223,3 @@ class MultiThreadedFakeAPI(object):
                 if api.isAvailable():
                     return api.request(chatText)
             time.sleep(0.1)
-
-
-
